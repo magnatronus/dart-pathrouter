@@ -14,6 +14,15 @@ Use this to associate a middleware handler with a named route, for example if yo
 
 ```
 
+**PathRouter** now also has a **catchAll** route that can be used to add a handler to any other routes not taken care of. This should always be the *last* middleware definition.
+
+```
+PathRouter().catchAll(myHandler);
+
+```
+
+
+
 Note that if a route to **/api** was requested and not handled by the defined *PathRouter* then it would be handled by any innerHandler set up,( *with .addhandler()* ) unless the optional error handler (myErrorHandler) was also defined.
 
 ```

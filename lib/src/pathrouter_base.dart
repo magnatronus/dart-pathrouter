@@ -6,13 +6,31 @@ import 'package:shelf_router/shelf_router.dart';
 /// PathRouter is a middleware handler component that is designed for use with [shelf]
 /// It provides a means of adding a specific set of routes to be handled by a path prefix
 class PathRouter {
+  /// This is a catchAll option that can be used to set a final route with NO path checking and will run [handler]
+  /// If used it should be the final middleware layer added  so that it only processes what is left
+  Middleware catchAll(Handler handler, {Handler errorHandler}) =>
+      (innerHandler) {
+        return (request) {
+          return Future.sync(() async {
+            Response response = await handler(request);
+            if (response == null) {
+              return (errorHandler != null)
+                  ? await errorHandler(request)
+                  : await innerHandler(request);
+            }
+            return response;
+          });
+        };
+      };
+
   /// This defines the [handler] that is associated with the specified [path]
   /// when used as middleware any requests for the specified [path] prefix will be directed to the specified [handler]
   /// If the specified route is not defined then if the [errorHandler] is set then this will be used, otherwise the inner handler is used.
   Middleware router(String path, Handler handler, {Handler errorHandler}) =>
       (innerHandler) {
         return (request) {
-          if ("/${request.url.pathSegments.first}" == path) {
+          if (request.url.pathSegments.isNotEmpty &&
+              "/${request.url.pathSegments.first}" == path) {
             request = request.change(path: path.replaceFirst("/", ""));
             return Future.sync(() async {
               Response response = await handler(request);

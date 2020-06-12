@@ -1,6 +1,6 @@
 name: pathrouter
 description: A middleware component for use with the shelf plugin, provides a means of adding a specific set of routes to be handled by a path prefix
-version: 0.1.1
+version: 0.1.2
 homepage: https://github.com/magnatronus/dart-pathrouter
 
 environment:
