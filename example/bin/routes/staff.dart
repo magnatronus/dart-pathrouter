@@ -4,7 +4,6 @@ import 'package:shelf/shelf.dart';
 /// Define an example Staff Route Handler
 // This should handle requests from the {server}/staff route
 class StaffRoute extends PathRouterTable {
-  
   @override
   defineTable() {
     app.get('/hello', (Request request) {
@@ -15,5 +14,4 @@ class StaffRoute extends PathRouterTable {
       return Response.ok('bye-for-now-staff');
     });
   }
-
 }
